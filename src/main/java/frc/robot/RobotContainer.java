@@ -12,13 +12,8 @@ import edu.wpi.first.wpilibj.PS4Controller.Button;
 import edu.wpi.first.wpilibj.Joystick;
 //import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
-import frc.robot.commands.basicLime;
-import frc.robot.commands.forwardCmd;
-//import frc.robot.commands.basicLime2;
-import frc.robot.commands.backwardCmd;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Lights;
-import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Chuck;
 import frc.robot.subsystems.Climber;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -29,8 +24,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.DriverStation;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-// To Test
-//import frc.robot.subsystems.Lights;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /*
@@ -44,14 +37,9 @@ public class RobotContainer {
   private final DriveTrain m_robotDrive = new DriveTrain();
   private final Chuck m_output = new Chuck();
   private final Climber m_climber = new Climber();
-  private final Limelight m_lime = new Limelight();
   private final Lights m_lights = new Lights();
-  public double speedmult = 8.0;
-  // test
-  //private final Lights m_lights = new Lights();
 
   // The driver's controller
-  //XboxController m_joystick = new XboxController(OIConstants.kDriverControllerPort);
   Joystick m_joystick1 = new Joystick(OIConstants.kDriverControllerPort);
   Joystick m_joystick2 = new Joystick(OIConstants.kDriverControllerPort2);
   XboxController m_operator = new XboxController(OIConstants.kDriverControllerPort3);
@@ -60,8 +48,6 @@ public class RobotContainer {
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   // TEST STAGE: Register PathFinder Commands
-
-  // womp womp
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -84,16 +70,13 @@ public class RobotContainer {
             () -> m_robotDrive.drive(
                 -MathUtil.applyDeadband(m_joystick1.getY()*setSpeed(), OIConstants.kDriveDeadband),
                 -MathUtil.applyDeadband(m_joystick1.getX()*setSpeed(), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_joystick2.getZ()*3.5, OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_joystick2.getZ()*3, OIConstants.kDriveDeadband),
                 true, true),
             m_robotDrive));
 
     m_chooser.setDefaultOption("Wait", new WaitCommand(15));
-    m_chooser.addOption("Drive Out of Start", (Command) new forwardCmd(m_robotDrive, 2.5));
-    m_chooser.addOption("LimeTrack", (Command) new basicLime(m_robotDrive, m_lime, m_output)
-    .andThen(new WaitCommand(1.5))
-    .andThen(m_output.stopRun())
-    .andThen((Command) new backwardCmd(m_robotDrive, 1.5)));
+
+    
     SmartDashboard.putData(m_chooser);
   }
 
@@ -124,42 +107,17 @@ public class RobotContainer {
         .onTrue(m_output.IntakeRing())
         .onFalse(m_output.stopRun());
 
-            // This button for the OPERATOR will fire the amp motor
+            // This button for the OPERATOR will fire the release motor
     new JoystickButton(m_operator,3)
         .onTrue(m_output.Outake())
         .onFalse(m_output.stopRunAmp());
-
-            // This button for the OPERATOR will intake the amp motor
-    //new JoystickButton(m_operator,1)
-      //  .onTrue(m_output.AmpIntake())
-       // .onFalse(m_output.stopRunAmp());
-            
-            // This button for the OPERATOR fires the lower speaker motor
-    // new JoystickButton(m_operator, 6)
-    //     .onTrue(m_output.SpeakerShoot2()//.alongWith(new RunCommand(
-    //         //() -> m_robotDrive.setLimit1()))
-    //         )
-    //     .onFalse(m_output.stopRunLower()//.alongWith(new RunCommand(
-    //         //() -> m_robotDrive.unsettling()))
-    //         );
         
             // This button for the OPERATOR fires the upper speaker motor (prep)
     new JoystickButton(m_operator, 4)
         .onTrue(m_output.SpeakerShoot())
         .onFalse(m_output.stopRun());
 
-    //         // This button for the OPERATOR will fire the amp motor    
-    // new JoystickButton(m_operator, 5)
-    //     .onTrue(m_output.AmpShoot())
-    //     .onFalse(m_output.stopRun());
-
-            // Supposed Accuate Function (OPERATOR)
-    // new JoystickButton(m_operator, 1)
-    //     .toggleOnTrue(Commands.startEnd(
-    //     () -> m_climber.AccuateUp(),
-    //     () -> m_climber.AcctuateDown(),
-    //     m_climber));
-
+            
             //Light function for OPERATOR lights speaker motor
     new JoystickButton(m_operator, 8)
         .toggleOnTrue(Commands.startEnd(
@@ -173,67 +131,23 @@ public class RobotContainer {
         () -> m_lights.ledYellow(),
         () -> m_lights.ledGreen(),
         m_lights));
+  }
 
+    /* Not sure what this does 
     new JoystickButton(m_joystick1, 1)
-        //.whileTrue(new RunCommand(
-        //() -> m_robotDrive.setLimit1()
-        //));
         .onTrue(new RunCommand(
             () -> m_robotDrive.setLimit1()))
         .onFalse(new RunCommand(
             () -> m_robotDrive.unsettling()));
+    } */
 
-
-    //  !! SKETCHY TEST COMMANDS !!
-
-        // Potential button for the DRIVER where upon holding the trigger,
-        // the DriveTrain will use the position of the target april tag
-        // as a guide to position itself accurately to the target.
-        /*
-    if (m_joystick1.getTrigger() == true)
-    {
-        // Probably have a checker for the correct speaker april tag id
-        if (m_lime.PosX() > 1.5) {
-            while (m_lime.PosX() > 1.5) {
-                if (m_lime.PosY() > 2) {
-                    while (m_lime.PosY() > 2) {
-                        m_robotDrive.drive(-0.2, 0, 0, true, true);
-                    }
-                }
-                else if (m_lime.PosY() < -2) {
-                    while (m_lime.PosY() < -2) {
-                        m_robotDrive.drive(0.2, 0, 0, true, true);
-                    }
-                }
-                m_robotDrive.drive(0, 0, 0.2, true, true);
-            }
-        }
-        else if (m_lime.PosX() < -1.5) {
-            while (m_lime.PosX() < 1.5) {
-                if (m_lime.PosY() > 2) {
-                    while (m_lime.PosY() > 2) {
-                        m_robotDrive.drive(-0.2, 0, 0, true, true);
-                    }
-                }
-                else if (m_lime.PosY() < -2) {
-                    while (m_lime.PosY() < -2) {
-                        m_robotDrive.drive(0.2, 0, 0, true, true);
-                    }
-                }
-                m_robotDrive.drive(0, 0, 0.2, true, true);
-            }      
-        }
-    }
-    */
-
-    }
     //SPEED CMD
     public double setSpeed() {
         if (m_joystick1.getRawButton(1) == true) {
-            return 4.0;
+            return 3.0;//4
         }
         else {
-            return 7.8;
+            return 6.8;//7.8
         }
     }
 

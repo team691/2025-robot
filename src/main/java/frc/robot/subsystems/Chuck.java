@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ChuckConstants;
@@ -24,7 +23,7 @@ public class Chuck extends SubsystemBase{
     // Speaker motors
     private final TalonFX motor10 = new TalonFX(ChuckConstants.id10);
     private final TalonFX motor11 = new TalonFX(ChuckConstants.id11);
-    // Amp motor
+    // Release motor
     private final CANSparkMax motor12 = new CANSparkMax(ChuckConstants.id12, MotorType.kBrushless);
 
     // Initialize new output
@@ -56,26 +55,13 @@ public class Chuck extends SubsystemBase{
             });
     }
 
-    public Command SpeakerShoot2() {
-        return run(
-            () -> {
-                motor11.set(20);
-            });
-    }
-    
     public Command Outake() {
         return run(
             () -> {
                 motor12.set(10);
             });
     }
-    public Command AmpShoot() {
-        return run(
-            () -> {
-                motor12.set(30);
-            });
-    }
-
+    
     public Command stopRun() {
         return run(
             () -> {
@@ -84,50 +70,11 @@ public class Chuck extends SubsystemBase{
                 motor12.set(0);
             });
         }
-
-    public Command stopRunLower() {
-        return run(
-            () -> {
-                motor11.set(0);
-                motor11.setInverted(false);
-            });
-        }
-
-    public Command stopRunUpper() {
-        return run(
-            () -> {
-                motor10.set(0);
-                motor10.setInverted(false);
-            });
-    }
-
+        
     public Command stopRunAmp() {
         return run(
             () -> {
                 motor12.set(0.0);
             });
     }
-
-    // Command functions
-    public void cmdPrep() {
-        motor10.set(40);
-        //motor11.set(TalonFXControlMode.PercentOutput, ChuckConstants.speakerspeed);
-    }
-
-    public void cmdFireNT() {
-        motor11.set(15);
-        //motor11.set(TalonFXControlMode.PercentOutput, ChuckConstants.speakerspeed);
-    }
-
-    public void cmdFire(Timer timer, double timeout) {
-        timer.reset();
-        timer.start();
-        motor11.set(20);
-        if (timer.get() >= timeout){
-            motor11.set(0);
-            motor10.set(0);
-        }
-        //motor11.set(TalonFXControlMode.PercentOutput, ChuckConstants.speakerspeed);
-    }
-
 }
