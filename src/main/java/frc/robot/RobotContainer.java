@@ -48,7 +48,24 @@ public class RobotContainer {
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   // TEST STAGE: Register PathFinder Commands
-
+    // values will be between 0 and 1 in this map
+    double[] PowerMap =
+    { 
+        0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0.1,0.1,0.1,0.15,0.15,
+        0.15,0.15,0.15,0.15,0.2,0.2,0.2,0.2,0.2,0.2,
+        0.25,0.25,0.25,0.25,0.25,0.25,0.25,0.25,0.3,0.3,
+        0.3,0.3,0.3,0.3,0.3,0.3,0.3,0.4,0.4,0.4,
+        0.4,0.4,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,
+        0.6,0.6,0.6,0.6,0.6,0.6,0.6,0.6,0.6,0.6,
+        0.6,0.7,0.7,0.7,0.7,0.7,0.7,0.7,0.7,0.7,
+        0.7,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.8,
+        0.9,0.9,0.9,0.9,0.9,1,1,1,1,1,1
+    };
+   double ReturnValueFromMap(double index)
+   {
+        return index < 0 ? -PowerMap[(int)(-(index*100))] : PowerMap[(int)(index*100)];
+   } 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -61,16 +78,20 @@ public class RobotContainer {
 
     // Ignore controller warnings
     DriverStation.silenceJoystickConnectionWarning(true);
-
+    
     // Configure default commands
     m_robotDrive.setDefaultCommand(
         // The left stick controls translation of the robot.
         // Turning is controlled by the X axis of the right stick.
         new RunCommand(
             () -> m_robotDrive.drive(
-                -MathUtil.applyDeadband(m_joystick1.getY()*setSpeed(), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_joystick1.getX()*setSpeed(), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_joystick2.getZ()*3, OIConstants.kDriveDeadband),
+                // getY() between 1 and -1 down is 1 up is -1
+                // getX() between -1 and 1 where right is 1 
+                // get z is between 1 and -1 spin right is 1
+                //max speed value robot can be set to drive is 3, scaling speed is capped around 3
+                ReturnValueFromMap(-MathUtil.applyDeadband(m_joystick1.getY(), OIConstants.kDriveDeadband)) * setSpeed(),
+                ReturnValueFromMap(-MathUtil.applyDeadband(m_joystick1.getX(), OIConstants.kDriveDeadband)) * setSpeed(),
+                (-MathUtil.applyDeadband(m_joystick2.getZ(), OIConstants.kDriveDeadband)) * 3.5,
                 true, true),
             m_robotDrive));
 
@@ -144,10 +165,10 @@ public class RobotContainer {
     //SPEED CMD
     public double setSpeed() {
         if (m_joystick1.getRawButton(1) == true) {
-            return 3.0;//4
+            return 3.0;
         }
         else {
-            return 6.8;//7.8
+            return 6.0;
         }
     }
 
