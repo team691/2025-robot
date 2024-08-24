@@ -46,21 +46,6 @@ public class Intake extends SubsystemBase{
                 motor14.set(3);
             });
     }
-
-    public Command SpeakerShoot() {
-        return run(
-            () -> {
-                motor13.set(-20);
-                motor14.set(-20);
-            });
-    }
-
-    public Command Outake() {
-        return run(
-            () -> {
-                motor15.set(10);
-            });
-    }
     
     public Command stopRun() {
         return run(
@@ -70,11 +55,4 @@ public class Intake extends SubsystemBase{
                 motor15.set(0);
             });
         }
-        
-    public Command stopRunAmp() {
-        return run(
-            () -> {
-                motor15.set(0.0);
-            });
-    }
 }
