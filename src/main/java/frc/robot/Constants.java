@@ -135,6 +135,12 @@ public final class Constants {
     public static final double RingPick = 2;
   }
 
+  public static final class floorIntake {
+    public static final int id14 = 14;
+    public static final int id15 = 15;
+    public static final int id16 = 16;
+  }
+
   public static final class LightConstants {
     public static final double brightness = 1.0;
     public static final double speed = 0.5;

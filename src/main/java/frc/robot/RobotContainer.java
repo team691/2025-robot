@@ -15,6 +15,7 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Lights;
 import frc.robot.subsystems.Chuck;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Climber;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -38,6 +39,7 @@ public class RobotContainer {
   private final Chuck m_output = new Chuck();
   private final Climber m_climber = new Climber();
   private final Lights m_lights = new Lights();
+  private final Intake m_intake = new Intake();
 
   // The driver's controller
   Joystick m_joystick1 = new Joystick(OIConstants.kDriverControllerPort);
@@ -138,6 +140,9 @@ public class RobotContainer {
         .onTrue(m_output.SpeakerShoot())
         .onFalse(m_output.stopRun());
 
+    new JoystickButton(m_operator, 1)
+        .onTrue(m_intake.IntakeRing())
+        .onFalse(m_intake.stopRun());
             
             //Light function for OPERATOR lights speaker motor
     new JoystickButton(m_operator, 8)
