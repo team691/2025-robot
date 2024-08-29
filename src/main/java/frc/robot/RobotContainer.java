@@ -5,6 +5,8 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.XboxController;
@@ -33,6 +35,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * periodic methods (other than the scheduler calls).  Instead, the structure of the robot
  * (including subsystems, commands, and button mappings) should be declared here.
  */
+
 public class RobotContainer {
   // The robot's subsystems
   private final DriveTrain m_robotDrive = new DriveTrain();
@@ -47,7 +50,7 @@ public class RobotContainer {
   XboxController m_operator = new XboxController(OIConstants.kDriverControllerPort3);
 
   // Initialize Sendable Chooser
-  SendableChooser<Command> m_chooser = new SendableChooser<>();
+  private final SendableChooser<Command> m_chooser; //= new SendableChooser<>();
 
   // TEST STAGE: Register PathFinder Commands
     // values will be between 0 and 1 in this map
@@ -74,9 +77,12 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-
-    // Add PathPlanner autonomous
+   // Add PathPlanner autonomous
     m_chooser = AutoBuilder.buildAutoChooser();
+    
+    m_chooser.setDefaultOption("Temp", new WaitCommand(15));
+
+    SmartDashboard.putData("Auto Chooser", m_chooser);
 
     // Ignore controller warnings
     DriverStation.silenceJoystickConnectionWarning(true);
@@ -97,10 +103,9 @@ public class RobotContainer {
                 true, true),
             m_robotDrive));
 
-    m_chooser.setDefaultOption("Wait", new WaitCommand(15));
-
     
-    SmartDashboard.putData(m_chooser);
+    
+    //SmartDashboard.putData(m_chooser);
   }
 
   // Button mapping and config, pass to JoystickButton
