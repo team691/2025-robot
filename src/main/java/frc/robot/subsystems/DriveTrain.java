@@ -92,10 +92,10 @@ public class DriveTrain extends SubsystemBase {
       this::getChassisSpeeds,
       this::driveRobotRelative,
       new HolonomicPathFollowerConfig(
-        new PIDConstants(4.0, 0.0, 0.0),
-        new PIDConstants(4.0, 0.0, 0.0),
-        DriveConstants.kMaxSpeedMetersPerSecond,
-        ModuleConstants.kRadiusFromModule,
+        new PIDConstants(2.0, 0.0, 0.0), //Translation
+        new PIDConstants(2.0, 0.0, 0.0), //Roattion
+        DriveConstants.kMaxSpeedMetersPerSecond, //max module speed
+        ModuleConstants.kRadiusFromModule, //drive base radius
         new ReplanningConfig()
       ),
       () -> {

@@ -17,7 +17,7 @@ public final class Constants {
   public static final class DriveConstants {
     
     // Driving parameters
-    public static final double kMaxSpeedMetersPerSecond = 4.0; //set to 4.0
+    public static final double kMaxSpeedMetersPerSecond = 2.0; //set to 4.0
     public static final double kMaxAngularSpeed = 2 * Math.PI; // radians per second
     //public double speedmult = 6;
 
@@ -28,8 +28,8 @@ public final class Constants {
     // previously 1.8 and 2.0
 
     // Swerve drivetrain physical distances
-    public static final double kTrackWidth = Units.inchesToMeters(21.5);
-    public static final double kWheelBase = Units.inchesToMeters(21.5);
+    public static final double kTrackWidth = Units.inchesToMeters(24.5);
+    public static final double kWheelBase = Units.inchesToMeters(24.5);
 
     // Kinematics variables
     public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
