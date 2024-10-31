@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ChuckConstants;
+import frc.robot.Constants.IntakeConstants;
 
 import com.ctre.phoenix6.hardware.*;
 //import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
@@ -17,8 +18,9 @@ import com.revrobotics.CANSparkBase.IdleMode;
 
 public class Chuck extends SubsystemBase{
 
-    // Motors
-    
+    //Motor for the Intake
+    private final CANSparkMax IntakeMotor = new CANSparkMax(IntakeConstants.id13, MotorType.kBrushless);
+
 
     // Speaker motors
     private final TalonFX motor10 = new TalonFX(ChuckConstants.id10);
@@ -28,7 +30,7 @@ public class Chuck extends SubsystemBase{
 
     // Initialize new output
     public Chuck() {
-
+        IntakeMotor.setIdleMode(IdleMode.kBrake);
         // By default, motors will be stopped
         motor10.setNeutralMode(NeutralModeValue.Brake);
         motor11.setNeutralMode(NeutralModeValue.Brake);
@@ -38,14 +40,14 @@ public class Chuck extends SubsystemBase{
     public void periodic() {
         // called periodically
     }
-
+/* 
     public Command IntakeRing() {
         return run(
             () -> {
                 motor10.set(3);
                 motor11.set(3);
             });
-    }
+    }*/
 
     public Command SpeakerShoot() {
         return run(
@@ -72,9 +74,25 @@ public class Chuck extends SubsystemBase{
         }
         
     public Command stopRunAmp() {
+        return run (
+            () -> {
+                motor12.set(0);
+            }
+        );
+    }    
+   
+    public Command RingPick() {
         return run(
             () -> {
-                motor12.set(0.0);
+                IntakeMotor.set(-IntakeConstants.RingPick);
+                motor12.set(5);
             });
     }
+    public Command RingStop() {
+        return run(
+            () -> {
+                IntakeMotor.set(IntakeConstants.RingStop);
+                motor12.set(0);
+            });
+    }   
 }

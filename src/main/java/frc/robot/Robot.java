@@ -84,7 +84,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     candle.setLEDs(0, 0, 255);
-  }
+   }
 
   @Override
   public void teleopInit() {
@@ -92,6 +92,7 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
+    
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
@@ -101,7 +102,9 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    //candle.setLEDs(0, 255, 0);
+    //candle.setLEDs(0, 255, 0)/;
+    
+    m_robotContainer.m_robotDrive.updatePidValues();
   }
 
   @Override

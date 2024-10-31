@@ -16,6 +16,8 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 // Constants
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.ModuleConstants;
@@ -25,13 +27,13 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
-
+import java.util.Map;
 /* The DriveTrain class handles the drive subsystem of the robot.
  * Configured for REV Robotics Swerve Modules
  * 
  */
 public class DriveTrain extends SubsystemBase {
-
+  HolonomicPathFollowerConfig config;
   // Creates swerve modules
   private final MAXSwerveModule m_frontLeft = new MAXSwerveModule(
       DriveConstants.kFrontLeftDrivingCanId,
@@ -58,7 +60,7 @@ public class DriveTrain extends SubsystemBase {
    * 
    */
   private final AHRS m_navx = new AHRS(SPI.Port.kMXP);
-
+  
   // Slew rate variables
   private double m_currentRotation = 0.0;
   private double m_currentTranslationDir = 0.0;
@@ -68,6 +70,8 @@ public class DriveTrain extends SubsystemBase {
   private SlewRateLimiter m_magLimiter = new SlewRateLimiter(DriveConstants.kMagnitudeSlewRate);
   private SlewRateLimiter m_rotLimiter = new SlewRateLimiter(DriveConstants.kRotationalSlewRate);
   private double m_prevTime = WPIUtilJNI.now() * 1e-6;
+  //private final int x;
+  
 
   /* Odemetry tracks the robot pose utilizing the gyro
    * mainly used for field relativity
@@ -85,19 +89,14 @@ public class DriveTrain extends SubsystemBase {
 
   // Creates new Drive Subsystem
   public DriveTrain() {
+    updatePidValues();
     // Autobuilder initialization
     AutoBuilder.configureHolonomic(
       this::getPose,
       this::resetOdometry,
       this::getChassisSpeeds,
       this::driveRobotRelative,
-      new HolonomicPathFollowerConfig(
-        new PIDConstants(0.55, 0.0, 0.0), //Translation //0.0
-        new PIDConstants(0.0, 0.0, 0.0), //Roattion //0.0
-        DriveConstants.kMaxSpeedMetersPerSecond, //max module speed
-        ModuleConstants.kRadiusFromModule, //drive base radius
-        new ReplanningConfig()
-      ),
+     config,
       () -> {
         var alliance = DriverStation.getAlliance();
         if (alliance.isPresent()) {
@@ -108,6 +107,28 @@ public class DriveTrain extends SubsystemBase {
         this
       );
     }
+
+public void updatePidValues() {
+  double translationP = SmartDashboard.getNumber("Translation P", 5.0);
+  double translationI = SmartDashboard.getNumber("Translation I", 0.0);
+  double translationD = SmartDashboard.getNumber("Translation D", 0.0);
+  double rotationP = SmartDashboard.getNumber("Rotation P", 5.0);
+  double rotationI = SmartDashboard.getNumber("Rotation I", 0.0);
+  double rotationD = SmartDashboard.getNumber("Rotation D", 0.0);
+  
+  // Set new PID constants
+  PIDConstants translationPID = new PIDConstants(translationP, translationI, translationD);
+  PIDConstants rotationPID = new PIDConstants(rotationP, rotationI, rotationD);
+
+  // Update your PathFollowerConfig with the new constants
+  config = new HolonomicPathFollowerConfig(
+    translationPID,
+    rotationPID,
+    DriveConstants.kMaxSpeedMetersPerSecond, //max module speed
+        ModuleConstants.kRadiusFromModule, // drive base radius in meters
+    new ReplanningConfig() // Default path replanning config
+  );
+}
 
   // Updates odometry periodically
   public void periodic() {

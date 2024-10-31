@@ -6,6 +6,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /* Constants class holds static variables that are referrenced in other classes
  * This class should not have any functions or other purposes
@@ -36,7 +37,7 @@ public final class Constants {
         new Translation2d(kWheelBase / 2, kTrackWidth / 2),
         new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
         new Translation2d(-kWheelBase / 2, kTrackWidth / 2),
-        new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));
+        new Translation2d(-kWheelBase / 2, -kTrackWidth / 2)); //All of these are inside the object :]
 
     // Angular offset variables (radians)
     public static final double kFrontLeftChassisAngularOffset = -Math.PI / 2;
@@ -73,7 +74,7 @@ public final class Constants {
 
     // Calculations required for driving motor conversion factors and feed forward
     public static final double kDrivingMotorFreeSpeedRps = NeoMotorConstants.kFreeSpeedRpm / 60;
-    public static final double kWheelDiameterMeters = 0.0762;
+    public static final double kWheelDiameterMeters = 74.75/1000; //Top right wheel is a millimeter off
     public static final double kWheelCircumferenceMeters = kWheelDiameterMeters * Math.PI;
     // 45 teeth on the wheel's bevel gear, 22 teeth on the first-stage spur gear, 15 teeth on the bevel pinion
     public static final double kDrivingMotorReduction = (45.0 * 22) / (kDrivingMotorPinionTeeth * 15);
@@ -132,13 +133,8 @@ public final class Constants {
 
   public static final class IntakeConstants {
     public static final int id13 = 13;
-    public static final double RingPick = 2;
-  }
-
-  public static final class floorIntake {
-    public static final int id14 = 14;
-    public static final int id15 = 15;
-    public static final int id16 = 16;
+    public static final double RingPick = 0.5;
+    public static final double RingStop = 0;
   }
 
   public static final class LightConstants {
