@@ -182,7 +182,7 @@ public class RobotContainer {
             return 2.0;
         }
         else {
-            return 6.0;
+            return 9.0;
         }
     }
 

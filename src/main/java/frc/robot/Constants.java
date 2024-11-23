@@ -42,7 +42,7 @@ public final class Constants {
     // Angular offset variables (radians)
     public static final double kFrontLeftChassisAngularOffset = -Math.PI / 2;
     public static final double kFrontRightChassisAngularOffset = 0;
-    public static final double kBackLeftChassisAngularOffset = Math.PI;
+    public static final double kBackLeftChassisAngularOffset = Math.PI/4;
     public static final double kBackRightChassisAngularOffset = Math.PI / 2;
 
     // SPARK MAX motor controller CAN Ids 
