@@ -42,8 +42,8 @@ public final class Constants {
     // Angular offset variables (radians)
     public static final double kFrontLeftChassisAngularOffset = -Math.PI / 2;
     public static final double kFrontRightChassisAngularOffset = 0;
-    public static final double kBackLeftChassisAngularOffset = Math.PI/4;
-    public static final double kBackRightChassisAngularOffset = Math.PI / 2;
+    public static final double kBackLeftChassisAngularOffset = Math.PI;
+    public static final double kBackRightChassisAngularOffset = Math.PI / 3;
 
     // SPARK MAX motor controller CAN Ids 
     // Driving motors
@@ -99,12 +99,12 @@ public final class Constants {
     public static final double kDrivingMinOutput = -1;
     public static final double kDrivingMaxOutput = 1;
 
-    public static final double kTurningP = 1; //1
+    public static final double kTurningP = 1.0; //1
     public static final double kTurningI = 0;
     public static final double kTurningD = 0;
     public static final double kTurningFF = 0;
-    public static final double kTurningMinOutput = -1;
-    public static final double kTurningMaxOutput = 1;
+    public static final double kTurningMinOutput = -1.0;
+    public static final double kTurningMaxOutput = 1.0;
 
     public static final IdleMode kDrivingMotorIdleMode = IdleMode.kBrake;
     public static final IdleMode kTurningMotorIdleMode = IdleMode.kBrake;
@@ -146,14 +146,14 @@ public final class Constants {
   }
 
   public static final class AutoConstants {
-    public static final double kMaxSpeedMetersPerSecond = 3;
-    public static final double kMaxAccelerationMetersPerSecondSquared = 3;
+    public static final double kMaxSpeedMetersPerSecond = 3.0;
+    public static final double kMaxAccelerationMetersPerSecondSquared = 3.0;
     public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
 
-    public static final double kPXController = 1;
-    public static final double kPYController = 1;
-    public static final double kPThetaController = 1;
+    public static final double kPXController = 1.0;
+    public static final double kPYController = 1.0;
+    public static final double kPThetaController = 1.0;
 
     // Constraint for the motion profiled robot angle controller
     public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
@@ -161,6 +161,6 @@ public final class Constants {
   }
 
   public static final class NeoMotorConstants {
-    public static final double kFreeSpeedRpm = 5676;
+    public static final double kFreeSpeedRpm = 5676.0;
   }
 }
